@@ -1,4 +1,4 @@
-import { DeepReadonly, Ref } from 'vue';
+import { Ref, WatchSource } from 'vue';
 import type Fetch from './Fetch';
 
 export type Service<TData, TParams extends any[]> = (...args: TParams) => Promise<TData>;
@@ -38,53 +38,53 @@ export interface PluginReturn<TData, TParams extends any[]> {
 // for useRequestImplement
 
 export interface Options<TData, TParams extends any[]> {
-  manual?: boolean;
+  manual: boolean;
 
-  onBefore?: (params: TParams) => void;
-  onSuccess?: (data: TData, params: TParams) => void;
-  onError?: (e: Error, params: TParams) => void;
-  // formatResult?: (res: any) => TData;
-  onFinally?: (params: TParams, data?: TData, e?: Error) => void;
+  onBefore: (params: TParams) => void;
+  onSuccess: (data: TData, params: TParams) => void;
+  onError: (e: Error, params: TParams) => void;
+  //formatResult?: (res: any) => TData;
+  onFinally: (params: TParams, data?: TData, e?: Error) => void;
 
-  defaultParams?: TParams;
+  defaultParams: TParams;
 
-  // refreshDeps
-  refreshDeps?: DeepReadonly<any>[];
-  refreshDepsAction?: () => void;
+  //refreshDeps
+  refreshDeps: WatchSource[];
+  refreshDepsAction: () => void;
 
-  // loading delay
-  loadingDelay?: number;
+  //loading delay
+  loadingDelay: number;
 
-  // polling
-  pollingInterval?: number;
-  pollingWhenHidden?: boolean;
+  //polling
+  pollingInterval: number;
+  pollingWhenHidden: boolean;
 
-  // refresh on window focus
-  refreshOnWindowFocus?: boolean;
-  focusTimespan?: number;
+  //refresh on window focus
+  refreshOnWindowFocus: boolean;
+  focusTimespan: number;
 
-  // debounce
-  debounceWait?: number;
-  debounceLeading?: boolean;
-  debounceTrailing?: boolean;
-  debounceMaxWait?: number;
+  //debounce
+  debounceWait: number;
+  debounceLeading: boolean;
+  debounceTrailing: boolean;
+  debounceMaxWait: number;
 
   // throttle
-  throttleWait?: number;
-  throttleLeading?: boolean;
-  throttleTrailing?: boolean;
+  throttleWait: number;
+  throttleLeading: boolean;
+  throttleTrailing: boolean;
 
-  // cache
-  cacheKey?: string;
-  cacheTime?: number;
-  staleTime?: number;
+  //cache
+  cacheKey: string;
+  cacheTime: number;
+  staleTime: number;
 
-  // retry
-  retryCount?: number;
-  retryInterval?: number;
+  //retry
+  retryCount: number;
+  retryInterval: number;
 
-  // ready
-  ready?: boolean;
+  //ready
+  ready: Ref<boolean>;
 
   // [key: string]: any;
 }

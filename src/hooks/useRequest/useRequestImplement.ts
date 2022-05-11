@@ -1,10 +1,11 @@
 import { computed, onMounted, onUnmounted, readonly, ref } from "vue";
+import { DefaultOptions } from "./constants";
 import Fetch from "./Fetch";
 import type { Options, Plugin, Result, Service, Subscribe } from "./types";
 
 function useRequestImplement<TData, TParams extends any[]>(
   service: Service<TData, TParams>,
-  options: Options<TData, TParams> = {},
+  options: Partial<Options<TData, TParams>>,
   plugins: Plugin<TData, TParams>[] = []
 ) {
   
@@ -29,19 +30,23 @@ function useRequestImplement<TData, TParams extends any[]>(
   };
   const fetchInstance = computed(() => {
     const initState = plugins
-      .map((p) => p?.onInit?.(fetchOptions))
+      .map((p) => p?.onInit?.({...DefaultOptions,...fetchOptions}))
       .filter(Boolean);
     return new Fetch<TData, TParams>(
       serviceRef,
-      fetchOptions,
+      {...DefaultOptions,...fetchOptions},
       update,
       Object.assign({}, ...initState)
     );
-  }).value; 
-  fetchInstance.options = fetchOptions;
+  }).value;
+  /**
+   * TODO: vue的hook和react的hook不一样, 这里赋值只会赋一次,当fetchOptions改变时不会覆盖
+   * 需要改成watch监听
+   */
+  // fetchInstance.options = fetchOptions;
   // run all plugins hooks
   fetchInstance.pluginImpls = plugins.map((p) =>
-    p(fetchInstance, fetchOptions)
+    p(fetchInstance, {...DefaultOptions,...fetchOptions})
   );
 
 
