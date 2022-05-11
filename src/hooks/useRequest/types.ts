@@ -7,7 +7,7 @@ export type Subscribe<TData, TParams extends any[]> = (params: FetchState<TData,
 // for Fetch
 
 export interface FetchState<TData, TParams extends any[]> {
-  loading: boolean;
+  loading?:boolean;
   params?: TParams;
   data?: TData;
   error?: Error;
@@ -94,7 +94,7 @@ export type Plugin<TData, TParams extends any[]> = {
     TData,
     TParams
   >;
-  onInit?: (options: Options<TData, TParams>) => Partial<FetchState<TData, TParams>>;
+  onInit?: (options: Partial<Options<TData, TParams>>) => Partial<FetchState<TData, TParams>>;
 };
 
 

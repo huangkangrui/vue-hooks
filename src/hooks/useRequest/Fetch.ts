@@ -1,38 +1,37 @@
-import { Ref } from 'vue';
-import type { FetchState, Options, PluginReturn, Service, Subscribe } from './types';
+import { ref, Ref } from 'vue';
+import type { FetchState, Options, PluginReturn, Service } from './types';
 
 export default class Fetch<TData, TParams extends any[]> {
   pluginImpls: PluginReturn<TData, TParams>[] = [];
 
   count = 0;
 
-  state: FetchState<TData, TParams> = {
-    loading: false,
-    params: undefined,
-    data: undefined,
-    error: undefined,
-  };
+  // state: FetchState<TData, TParams> = {
+  loading = ref<boolean>(false);
+  params = ref<TParams>();
+  data = ref<TData>();
+  error = ref<Error>();
 
   constructor(
     public serviceRef: Ref<Service<TData, TParams>>,
     public options: Options<TData, TParams>,
-    public subscribe: Subscribe<TData, TParams>,
     public initState: Partial<FetchState<TData, TParams>> = {},
   ) {
-    this.state = {
-      ...this.state,
-      loading: !options.manual,
-      ...initState,
-    };
+    this.setState({ loading: !options.manual })
   }
 
-  setState(s: Partial<FetchState<TData, TParams>> = {}) {
-    const newState = {
-      ...this.state,
-      ...s,
+  setState(state: FetchState<TData, TParams>) {
+    const newState: FetchState<TData, TParams> = {
+      params: this.params.value,
+      data: this.data.value,
+      error: this.error.value,
+      loading: this.loading.value,
+      ...state
     }
-    this.state = newState;
-    this.subscribe(newState);
+    this.loading.value = !!newState.loading
+    this.params.value = newState.params
+    this.data.value = newState.data
+    this.error.value = newState.error
   }
 
   runPluginHandler(event: keyof PluginReturn<TData, TParams>, ...rest: any[]) {
@@ -42,6 +41,7 @@ export default class Fetch<TData, TParams extends any[]> {
   }
 
   async runAsync(...params: TParams): Promise<TData> {
+    console.log('run了');
     this.count += 1;
     const currentCount = this.count;
     const {
@@ -52,15 +52,14 @@ export default class Fetch<TData, TParams extends any[]> {
 
     // stop request
     if (stopNow) {
-      return new Promise(() => {});
+      return new Promise(() => { });
     }
 
     this.setState({
       loading: true,
       params,
-      ...state,
-    });
-
+      ...state
+    })
     // return now
     if (returnNow) {
       return Promise.resolve(state.data);
@@ -80,14 +79,12 @@ export default class Fetch<TData, TParams extends any[]> {
 
       if (currentCount !== this.count) {
         // prevent run.then when request is canceled
-        return new Promise(() => {});
+        return new Promise(() => { });
       }
 
-      this.setState({
-        data: res,
-        error: undefined,
-        loading: false,
-      });
+      this.data.value = res;
+      this.error.value = undefined;
+      this.loading.value = false;
 
       this.options.onSuccess?.(res, params);
       this.runPluginHandler('onSuccess', res, params);
@@ -101,7 +98,7 @@ export default class Fetch<TData, TParams extends any[]> {
       return res;
     } catch (error) {
       if (currentCount !== this.count) {
-        return new Promise(() => {});
+        return new Promise(() => { });
       }
 
       this.setState({
@@ -141,7 +138,7 @@ export default class Fetch<TData, TParams extends any[]> {
 
   refresh() {
     // @ts-ignore
-    this.run(...(this.state.params || []));
+    this.run(...(this.params || []));
   }
 
   refreshAsync() {
@@ -159,9 +156,6 @@ export default class Fetch<TData, TParams extends any[]> {
     }
 
     this.runPluginHandler('onMutate', targetData);
-
-    this.setState({
-      data: targetData,
-    });
+    this.setState({ data: targetData })
   }
 }

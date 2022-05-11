@@ -1,7 +1,7 @@
 import { computed, onMounted, onUnmounted, readonly, ref } from "vue";
 import { DefaultOptions } from "./constants";
 import Fetch from "./Fetch";
-import type { Options, Plugin, Result, Service, Subscribe } from "./types";
+import type { Options, Plugin, Result, Service } from "./types";
 
 function useRequestImplement<TData, TParams extends any[]>(
   service: Service<TData, TParams>,
@@ -10,11 +10,6 @@ function useRequestImplement<TData, TParams extends any[]>(
 ) {
   
   const { manual = false, ...rest } = options;
-  const loading = ref<boolean>(false);
-  const data = ref<TData>();
-  const error = ref<Error>();
-  // @ts-ignore
-  const params = ref<TParams>(options.defaultParams ?? []);
   const fetchOptions = {
     manual,
     ...rest,
@@ -22,12 +17,6 @@ function useRequestImplement<TData, TParams extends any[]>(
 
   const serviceRef = ref(service);
 
-  const update: Subscribe<TData, TParams> = (state) => {
-    loading.value = state.loading
-    data.value = state.data
-    error.value = state.error
-    params.value = state.params
-  };
   const fetchInstance = computed(() => {
     const initState = plugins
       .map((p) => p?.onInit?.({...DefaultOptions,...fetchOptions}))
@@ -35,7 +24,6 @@ function useRequestImplement<TData, TParams extends any[]>(
     return new Fetch<TData, TParams>(
       serviceRef,
       {...DefaultOptions,...fetchOptions},
-      update,
       Object.assign({}, ...initState)
     );
   }).value;
@@ -53,7 +41,7 @@ function useRequestImplement<TData, TParams extends any[]>(
   onMounted(() => {
     if (!manual) {
       // useCachePlugin can set fetchInstance.state.params from cache when init
-      const params = fetchInstance.state.params || options.defaultParams || [];
+      const params = fetchInstance.params || options.defaultParams || [];
       // @ts-ignore
       fetchInstance.run(...params);
     }
@@ -64,10 +52,10 @@ function useRequestImplement<TData, TParams extends any[]>(
   });
 
   return {
-    loading: readonly(loading),
-    data: readonly(data),
-    error: readonly(error),
-    params: readonly(params),
+    loading: readonly(fetchInstance.loading),
+    data: readonly(fetchInstance.data),
+    error: readonly(fetchInstance.error),
+    params: readonly(fetchInstance.params),
     cancel: fetchInstance.cancel.bind(fetchInstance),
     refresh: fetchInstance.refresh.bind(fetchInstance),
     refreshAsync: fetchInstance.refreshAsync.bind(fetchInstance),
