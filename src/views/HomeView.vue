@@ -23,7 +23,10 @@ export default defineComponent({
     const { run, data, loading, mutate, cancel } = useRequest(getFullName, {
       manual: false,
     });
-    return { run, data, loading, mutate, cancel };
+    let num = 10;
+    const trigger = () => {
+    }
+    return { run, data, loading, mutate, cancel, trigger, num };
   },
 });
 </script>

@@ -1,5 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import LoadingDelay from '../views/LoadingDelay.vue'
+import Polling from '../views/Polling.vue'
+import AutoRun from '../views/AutoRun.vue'
+import RefreshOnWindowFocus from '../views/RefreshOnWindowFocus.vue'
+import Debounce from '../views/Debounce.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -8,13 +13,30 @@ const routes: Array<RouteRecordRaw> = [
     component: HomeView
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    path: '/loadingDelay',
+    name: 'LoadingDelay',
+    component: LoadingDelay
+  },
+  {
+    path: '/polling',
+    name: 'Polling',
+    component: Polling
+  },
+  {
+    path: '/autoRun',
+    name: 'AutoRun',
+    component: AutoRun,
+  },
+  {
+    path: '/refreshOnWindowFocus',
+    name: 'RefreshOnWindowFocus',
+    component: RefreshOnWindowFocus,
+  },
+  {
+    path: '/debounce',
+    name: 'Debounce',
+    component: Debounce,
+  },
 ]
 
 const router = createRouter({

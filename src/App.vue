@@ -1,7 +1,19 @@
+<!--
+ * @Author: huangkangrui 1505207242@qq.com
+ * @Date: 2022-05-08 17:43:25
+ * @LastEditors: huangkangrui 1505207242@qq.com
+ * @LastEditTime: 2022-05-16 17:34:49
+ * @FilePath: \vue-hooks\src\App.vue
+ * @Description: 
+-->
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/loadingDelay">LoadingDelay</router-link> |
+    <router-link to="/polling">Polling</router-link> |
+    <router-link to="/autoRun">AutoRun</router-link> |
+    <router-link to="/refreshOnWindowFocus">RefreshOnWindowFocus</router-link> |
+    <router-link to="/debounce">Debounce</router-link> |
   </nav>
   <router-view/>
 </template>

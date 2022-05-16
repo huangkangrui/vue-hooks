@@ -1,3 +1,11 @@
+<!--
+ * @Author: huangkangrui 1505207242@qq.com
+ * @Date: 2022-05-13 09:27:02
+ * @LastEditors: huangkangrui 1505207242@qq.com
+ * @LastEditTime: 2022-05-16 15:57:04
+ * @FilePath: \vue-hooks\src\views\RefreshOnWindowFocus.vue
+ * @Description: 
+-->
 <template>
   <div class="about">
     <button @click="run">开始请求</button>
@@ -9,7 +17,7 @@
 </template>
 <script lang="ts">
 import useRequest from "@/hooks/useRequest/useRequest";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 function getFullName(): Promise<string> {
   console.log("发起请求");
 
