@@ -2,7 +2,7 @@
  * @Author: huangkangrui 1505207242@qq.com
  * @Date: 2022-05-16 15:23:55
  * @LastEditors: huangkangrui 1505207242@qq.com
- * @LastEditTime: 2022-05-16 17:49:43
+ * @LastEditTime: 2022-05-17 09:09:32
  * @FilePath: \vue-hooks\src\hooks\useRequest\plugins\useDebouncePlugin.ts
  * @Description: 
  */
@@ -23,13 +23,13 @@ const useDebouncePlugin: Plugin<any, any[]> = (
     watchEffect(() => {
         const options: DebounceSettings = {};
         if (debounceWait) {
-            if (debounceLeading !== undefined) {
+            if (debounceLeading) {
                 options.leading = debounceLeading;
             }
-            if (debounceTrailing !== undefined) {
+            if (debounceTrailing) {
                 options.trailing = debounceTrailing;
             }
-            if (debounceMaxWait !== undefined) {
+            if (debounceMaxWait) {
                 options.maxWait = debounceMaxWait;
             }
             const _originRunAsync = fetchInstance.runAsync.bind(fetchInstance);
@@ -43,7 +43,6 @@ const useDebouncePlugin: Plugin<any, any[]> = (
             );
 
             fetchInstance.runAsync = (...args) => {
-                debugger
                 return new Promise((resolve, reject) => {
                     debounced(() => {
                         _originRunAsync(...args)
