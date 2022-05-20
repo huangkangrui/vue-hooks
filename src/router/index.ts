@@ -1,3 +1,11 @@
+/*
+ * @Author: CodeDragon 1505207242@qq.com
+ * @Date: 2022-05-20 22:32:13
+ * @LastEditors: CodeDragon 1505207242@qq.com
+ * @LastEditTime: 2022-05-20 22:57:01
+ * @FilePath: \vue-hooks\src\router\index.ts
+ * @Description: 
+ */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoadingDelay from '../views/LoadingDelay.vue'
@@ -5,6 +13,7 @@ import Polling from '../views/Polling.vue'
 import AutoRun from '../views/AutoRun.vue'
 import RefreshOnWindowFocus from '../views/RefreshOnWindowFocus.vue'
 import Debounce from '../views/Debounce.vue'
+import Throttle from '../views/Throttle.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -36,6 +45,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/debounce',
     name: 'Debounce',
     component: Debounce,
+  },
+  {
+    path: '/throttle',
+    name: 'Throttle',
+    component: Throttle,
   },
 ]
 

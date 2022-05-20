@@ -12,6 +12,7 @@ import useDebouncePlugin from './plugins/useDebouncePlugin';
 import useLoadingDelayPlugin from './plugins/useLoadingDelayPlugin';
 import usePollingPlugin from './plugins/usePollingPlugin';
 import useRefreshOnWindowFocusPlugin from './plugins/useRefreshOnWindowFocusPlugin';
+import useThrottlePlugin from './plugins/useThrottlePlugin';
 import type { Options, Plugin, Service } from './types';
 import useRequestImplement from './useRequestImplement';
 function useRequest<TData, TParams extends any[]>(
@@ -26,6 +27,7 @@ function useRequest<TData, TParams extends any[]>(
     useAutoRunPlugin,
     useRefreshOnWindowFocusPlugin,
     useDebouncePlugin,
+    useThrottlePlugin,
   ] as Plugin<TData, TParams>[]);
 }
 
