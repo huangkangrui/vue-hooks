@@ -2,9 +2,9 @@
  * @Author: CodeDragon 1505207242@qq.com
  * @Date: 2022-05-20 22:49:57
  * @LastEditors: CodeDragon 1505207242@qq.com
- * @LastEditTime: 2022-05-22 20:40:46
+ * @LastEditTime: 2022-05-22 22:32:45
  * @FilePath: \vue-hooks\src\hooks\useRequest\plugins\useThrottlePlugin.ts
- * @Description: 
+ * @Description:
  */
 import { watchEffect } from "@vue/runtime-dom";
 import type { DebouncedFunc, ThrottleSettings } from "lodash";
@@ -20,7 +20,7 @@ const useThrottlePlugin: Plugin<any, any[]> = (
   }
   let throttled: DebouncedFunc<any>;
 
-  watchEffect(() => {
+  watchEffect((onInvalidate) => {
     const options: ThrottleSettings = {};
     if (throttleLeading !== undefined) {
       options.leading = throttleLeading;
@@ -49,10 +49,10 @@ const useThrottlePlugin: Plugin<any, any[]> = (
         });
       };
 
-      return () => {
+      onInvalidate(() => {
         fetchInstance.runAsync = _originRunAsync;
         throttled.cancel();
-      };
+      });
     }
   });
 

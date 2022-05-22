@@ -2,7 +2,7 @@
  * @Author: huangkangrui 1505207242@qq.com
  * @Date: 2022-05-16 15:23:55
  * @LastEditors: CodeDragon 1505207242@qq.com
- * @LastEditTime: 2022-05-22 20:33:58
+ * @LastEditTime: 2022-05-22 22:35:53
  * @FilePath: \vue-hooks\src\hooks\useRequest\plugins\useDebouncePlugin.ts
  * @Description:
  */
@@ -13,13 +13,18 @@ import type { Plugin } from "../types";
 
 const useDebouncePlugin: Plugin<any, any[]> = (
   fetchInstance,
-  { debounceWait, debounceLeading = false, debounceTrailing = true, debounceMaxWait }
+  {
+    debounceWait,
+    debounceLeading = false,
+    debounceTrailing = true,
+    debounceMaxWait,
+  }
 ) => {
   if (!debounceWait) {
     return {};
   }
   let debounced: DebouncedFunc<any>;
-  watchEffect(() => {
+  watchEffect((onInvalidate) => {
     const options: DebounceSettings = {};
     if (debounceWait) {
       if (debounceLeading !== undefined) {
@@ -40,7 +45,6 @@ const useDebouncePlugin: Plugin<any, any[]> = (
         debounceWait,
         options
       );
-
       fetchInstance.runAsync = (...args) => {
         return new Promise((resolve, reject) => {
           debounced(() => {
@@ -50,11 +54,10 @@ const useDebouncePlugin: Plugin<any, any[]> = (
           });
         });
       };
-
-      return () => {
+      onInvalidate(() => {
         debounced.cancel();
         fetchInstance.runAsync = _originRunAsync;
-      };
+      });
     }
   });
 
