@@ -12,6 +12,7 @@ import useDebouncePlugin from './plugins/useDebouncePlugin';
 import useLoadingDelayPlugin from './plugins/useLoadingDelayPlugin';
 import usePollingPlugin from './plugins/usePollingPlugin';
 import useRefreshOnWindowFocusPlugin from './plugins/useRefreshOnWindowFocusPlugin';
+import useRetryPlugin from './plugins/useRetryPlugin';
 import useThrottlePlugin from './plugins/useThrottlePlugin';
 import type { Options, Plugin, Service } from './types';
 import useRequestImplement from './useRequestImplement';
@@ -28,6 +29,7 @@ function useRequest<TData, TParams extends any[]>(
     useRefreshOnWindowFocusPlugin,
     useDebouncePlugin,
     useThrottlePlugin,
+    useRetryPlugin,
   ] as Plugin<TData, TParams>[]);
 }
 

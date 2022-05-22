@@ -14,6 +14,7 @@ import AutoRun from '../views/AutoRun.vue'
 import RefreshOnWindowFocus from '../views/RefreshOnWindowFocus.vue'
 import Debounce from '../views/Debounce.vue'
 import Throttle from '../views/Throttle.vue'
+import Retry from '../views/Retry.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -50,6 +51,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/throttle',
     name: 'Throttle',
     component: Throttle,
+  },
+  {
+    path: '/retry',
+    name: 'Retry',
+    component: Retry,
   },
 ]
 
