@@ -1,5 +1,12 @@
+/*
+ * @Author: CodeDragon 1505207242@qq.com
+ * @Date: 2022-05-20 22:32:13
+ * @LastEditors: CodeDragon 1505207242@qq.com
+ * @LastEditTime: 2022-05-22 20:39:03
+ * @FilePath: \vue-hooks\src\hooks\useRequest\useRequestImplement.ts
+ * @Description: 
+ */
 import { computed, onMounted, onUnmounted, readonly, ref } from "vue";
-import { DefaultOptions } from "./constants";
 import Fetch from "./Fetch";
 import type { Options, Plugin, Result, Service } from "./types";
 
@@ -19,11 +26,11 @@ function useRequestImplement<TData, TParams extends any[]>(
 
   const fetchInstance = computed(() => {
     const initState = plugins
-      .map((p) => p?.onInit?.({...DefaultOptions,...fetchOptions}))
+      .map((p) => p?.onInit?.({...fetchOptions}))
       .filter(Boolean);
     return new Fetch<TData, TParams>(
       serviceRef,
-      {...DefaultOptions,...fetchOptions},
+      {...fetchOptions},
       Object.assign({}, ...initState)
     );
   }).value;
@@ -34,7 +41,7 @@ function useRequestImplement<TData, TParams extends any[]>(
   // fetchInstance.options = fetchOptions;
   // run all plugins hooks
   fetchInstance.pluginImpls = plugins.map((p) =>
-    p(fetchInstance, {...DefaultOptions,...fetchOptions})
+    p(fetchInstance, fetchOptions)
   );
 
 

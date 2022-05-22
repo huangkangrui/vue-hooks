@@ -1,4 +1,4 @@
-import { onUnmounted, watch, watchEffect } from 'vue';
+import { onUnmounted, watchEffect } from 'vue';
 import type { Plugin } from '../types';
 import limit from '../utils/limit';
 import subscribeFocus from '../utils/subscribeFocus';

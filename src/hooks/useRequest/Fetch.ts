@@ -14,7 +14,7 @@ export default class Fetch<TData, TParams extends any[]> {
 
   constructor(
     public serviceRef: Ref<Service<TData, TParams>>,
-    public options: Options<TData, TParams>,
+    public options: Partial<Options<TData, TParams>>,
     public initState: Partial<FetchState<TData, TParams>> = {},
   ) {
     this.setState({ loading: !options.manual })

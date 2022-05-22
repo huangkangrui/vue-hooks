@@ -2,7 +2,7 @@
  * @Author: CodeDragon 1505207242@qq.com
  * @Date: 2022-05-20 22:49:57
  * @LastEditors: CodeDragon 1505207242@qq.com
- * @LastEditTime: 2022-05-20 23:11:15
+ * @LastEditTime: 2022-05-22 20:40:46
  * @FilePath: \vue-hooks\src\hooks\useRequest\plugins\useThrottlePlugin.ts
  * @Description: 
  */
@@ -13,7 +13,7 @@ import type { Plugin } from "../types";
 
 const useThrottlePlugin: Plugin<any, any[]> = (
   fetchInstance,
-  { throttleWait, throttleLeading, throttleTrailing }
+  { throttleWait, throttleLeading = true, throttleTrailing = true }
 ) => {
   if (!throttleWait) {
     return {};
@@ -21,13 +21,11 @@ const useThrottlePlugin: Plugin<any, any[]> = (
   let throttled: DebouncedFunc<any>;
 
   watchEffect(() => {
-      console.log('执行watchEffect');
-      
     const options: ThrottleSettings = {};
-    if (throttleLeading) {
+    if (throttleLeading !== undefined) {
       options.leading = throttleLeading;
     }
-    if (throttleTrailing) {
+    if (throttleTrailing !== undefined) {
       options.trailing = throttleTrailing;
     }
     if (throttleWait) {

@@ -90,7 +90,7 @@ export interface Options<TData, TParams extends any[]> {
 }
 
 export type Plugin<TData, TParams extends any[]> = {
-  (fetchInstance: Fetch<TData, TParams>, options: Options<TData, TParams>): PluginReturn<
+  (fetchInstance: Fetch<TData, TParams>, options: Partial<Options<TData, TParams>>): PluginReturn<
     TData,
     TParams
   >;

@@ -1,18 +1,18 @@
-import { watch } from 'vue';
-import type { Plugin } from '../types';
+import { ref, watch } from "vue";
+import type { Plugin } from "../types";
 
 // support refreshDeps & ready
 const useAutoRunPlugin: Plugin<any, any[]> = (
   fetchInstance,
-  { manual, ready, defaultParams = [], refreshDeps },
+  { manual, ready = ref(true), defaultParams = [], refreshDeps = [] }
 ) => {
   let hasAutoRun = false;
   watch(ready, () => {
     if (!manual && ready.value) {
-      hasAutoRun = true
+      hasAutoRun = true;
       fetchInstance.run(...defaultParams);
     }
-  })
+  });
 
   watch(refreshDeps, () => {
     if (hasAutoRun) {
@@ -23,7 +23,7 @@ const useAutoRunPlugin: Plugin<any, any[]> = (
       hasAutoRun = true;
       fetchInstance.refresh();
     }
-  })
+  });
 
   return {
     onBefore: () => {
@@ -37,8 +37,8 @@ const useAutoRunPlugin: Plugin<any, any[]> = (
       hasAutoRun = false;
     },
     onFinally: () => {
-      hasAutoRun = false
-    }
+      hasAutoRun = false;
+    },
   };
 };
 
